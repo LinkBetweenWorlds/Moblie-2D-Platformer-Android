@@ -7,7 +7,7 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
 {
     string GooglePlay_ID = "4037201";
     string rewardedVideo_ID = "rewardedVideo";
-    bool testMode = true;
+    bool testMode = false;
 
     private void Start()
     {

@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
 
@@ -34,6 +35,12 @@ public class UIManager : MonoBehaviour
 
     public Text KeyToCastleText;
     public Text KeyToCastlePrice;
+
+    public Text Item_Description;
+
+    public GameObject menuPanel;
+    private bool isMenuOpen;
+    private Player player;
 
     private Color textAlpha;
 
@@ -79,6 +86,31 @@ public class UIManager : MonoBehaviour
                 healthBar[i].enabled = false;
             }
         }
+    }
+    public void OpenCloseMenu()
+    {
+        if (isMenuOpen == false)
+        {
+            menuPanel.SetActive(true);
+            isMenuOpen = true;
+        }
+        else if (isMenuOpen == true)
+        {
+            menuPanel.SetActive(false);
+            isMenuOpen = false;
+        }
+
+    }
+
+    public void SaveGame()
+    {
+        SaveSystem.SavePlayer(player);
+    }
+
+    public void QuitGame()
+    {
+        SaveSystem.SavePlayer(player);
+        Application.Quit();
     }
 
 }

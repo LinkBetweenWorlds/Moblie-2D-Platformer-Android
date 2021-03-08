@@ -9,6 +9,9 @@ public class Shop : MonoBehaviour
     public int currentItemCost;
 
     private Player player;
+    private string FlameSwordItemDescription = "This adds a fire aspect to your sword allowing you to double your attack damage.";
+    private string BootsOfFlightItemDescription = "These boots increase both your jump height, and allow you to run faster.";
+    private string KeyToCastleItemDescription = "These are the keys to the castle. You will need them to get into the castle.";
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -52,6 +55,7 @@ public class Shop : MonoBehaviour
                 if (GameManager.Instance.HasFlameSword == false)
                 {
                     UIManager.Instance.UpdateShopSelection(60);
+                    UIManager.Instance.Item_Description.text = FlameSwordItemDescription;
                     currentSelectedItem = 0;
                     currentItemCost = 200;
                 }
@@ -65,6 +69,7 @@ public class Shop : MonoBehaviour
                 if (GameManager.Instance.HasBootsOfFlight == false)
                 {
                     UIManager.Instance.UpdateShopSelection(-40);
+                    UIManager.Instance.Item_Description.text = BootsOfFlightItemDescription;
                     currentSelectedItem = 1;
                     currentItemCost = 300;
                 }
@@ -78,6 +83,7 @@ public class Shop : MonoBehaviour
                 if (GameManager.Instance.HasKeyToCastle == false)
                 {
                     UIManager.Instance.UpdateShopSelection(-140);
+                    UIManager.Instance.Item_Description.text = KeyToCastleItemDescription;
                     currentSelectedItem = 2;
                     currentItemCost = 100;
                 }
@@ -124,6 +130,7 @@ public class Shop : MonoBehaviour
             Debug.Log(player.diamonds);
             shopPanel.SetActive(false);
             UIManager.Instance.UpdateDiamondCount(player.diamonds);
+            SaveSystem.SavePlayer(player);
         }
         else
         {

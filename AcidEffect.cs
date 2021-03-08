@@ -6,7 +6,7 @@ public class AcidEffect : MonoBehaviour
 {
     private void Start()
     {
-        Destroy(this.gameObject, 5.0f);
+        Destroy(this.gameObject, 4.0f);
     }
     private void Update()
     {

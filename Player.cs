@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerAnimation playerAnim;
     private SpriteRenderer playerSprite;
     private SpriteRenderer swordArcSprite;
+    private bool reloadScene = false;
 
     public int diamonds;
 
@@ -29,7 +31,21 @@ public class Player : MonoBehaviour, IDamageable
         playerSprite = GetComponentInChildren<SpriteRenderer>();
         swordArcSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
 
+        PlayerData data = SaveSystem.LoadPlayer();
+
+        diamonds = data.diamonds;
         Health = 4;
+
+        GameManager.Instance.HasFlameSword = data.HasFlameSword;
+        GameManager.Instance.HasBootsOfFlight = data.HasBootsOfFlight;
+        GameManager.Instance.HasKeyToCastle = data.HasKeytoCastle;
+
+        if (GameManager.Instance.HasBootsOfFlight)
+        {
+            jumpforce = 12;
+            playerSpeed = 10;
+        }
+        UIManager.Instance.UpdateDiamondCount(diamonds);
     }
 
     void Update()
@@ -45,8 +61,6 @@ public class Player : MonoBehaviour, IDamageable
     }
     void Movement()
     {
-
-        //float horizontalInput = CrossPlatformInputManager.GetAxis("Horizontal");
         float horizontalInput;
         if (CrossPlatformInputManager.GetButton("LeftButton"))
         {
@@ -106,31 +120,6 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-    void Flip(bool faceLeft)
-    {
-        if (faceLeft == true)
-        {
-            playerSprite.flipX = true;
-            swordArcSprite.flipY = true;
-
-            Vector3 newPos = swordArcSprite.transform.localPosition;
-
-            newPos.x = -1.01f;
-
-            swordArcSprite.transform.localPosition = newPos;
-        }
-        else if (faceLeft == false)
-        {
-            playerSprite.flipX = false;
-            swordArcSprite.flipY = false;
-
-            Vector3 newPos = swordArcSprite.transform.localPosition;
-
-            newPos.x = 1.01f;
-
-            swordArcSprite.transform.localPosition = newPos;
-        }
-    }
     private void FlipPlayer(bool faceLeft)
     {
         if (faceLeft == true)
@@ -157,6 +146,11 @@ public class Player : MonoBehaviour, IDamageable
         if(Health < 1)
         {
             playerAnim.Death();
+            StartCoroutine(TimetilResest());
+        }
+        if (reloadScene)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -171,5 +165,11 @@ public class Player : MonoBehaviour, IDamageable
         resetJumpNeeded = true;
         yield return new WaitForSeconds(0.5f);
         resetJumpNeeded = false;
+    }
+
+    IEnumerator TimetilResest()
+    {
+        yield return new WaitForSeconds(6.0f);
+        reloadScene = true;
     }
 }
