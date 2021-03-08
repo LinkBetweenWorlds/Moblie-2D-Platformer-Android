@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerData
@@ -11,6 +12,7 @@ public class PlayerData
     public bool HasFlameSword;
     public bool HasBootsOfFlight;
     public bool HasKeytoCastle;
+    public string currentScene;
 
     public PlayerData (Player player)
     {
@@ -25,5 +27,6 @@ public class PlayerData
         HasBootsOfFlight = GameManager.Instance.HasBootsOfFlight;
         HasKeytoCastle = GameManager.Instance.HasKeyToCastle;
 
+        currentScene = SceneManager.GetActiveScene().name;
     }
 }

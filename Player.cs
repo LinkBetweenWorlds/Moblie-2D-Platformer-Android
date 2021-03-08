@@ -19,6 +19,7 @@ public class Player : MonoBehaviour, IDamageable
     private SpriteRenderer playerSprite;
     private SpriteRenderer swordArcSprite;
     private bool reloadScene = false;
+    private Vector3 startPosition;
 
     public int diamonds;
 
@@ -46,6 +47,12 @@ public class Player : MonoBehaviour, IDamageable
             playerSpeed = 10;
         }
         UIManager.Instance.UpdateDiamondCount(diamonds);
+
+        startPosition.x = data.position[0];
+        startPosition.y = data.position[1];
+        startPosition.z = 0;
+
+        transform.position = startPosition;
     }
 
     void Update()
